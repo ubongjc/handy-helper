@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Welcome</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Mmedara Josiah">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/8.4.6/js/utils.js"></script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'jobs/css/bootstrap/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'jobs/css/welcome.css' %}">
+        <script src="{% static 'jobs/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'jobs/js/welcome.js' %}"></script>
+    </head>
+    <body>
+        <div class="position-relative container-fluid">
+            <div class="row">
+                <div class="d-flex justify-content-center align-items-center pt-4">
+                    <h1>Welcome! Sign in to manage your jobs!</h1>
+                </div>
+                <div class="col-12 col-md-6 mb-lg-0 py-lg-16 pt-md-7 px-10 px-lg-16 mb-8">
+                    <div class="border border-dark">
+                        <p class="d-flex justify-content-center align-items-center m-4">Register</p>
+                        <form action="{% url 'jobs:process_signup' %}" method="post" id="signup_form">
+                            {% csrf_token %}
+                            <div class="row px-4">
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <div class="" style="width: 110px; height: 50px;">
+                                        <label class="me-4 align-top" for="first_name">First name</label>
+                                    </div>
+                                    <div class="" style="height: 80px; width: 300px;">
+                                        <input class="form-control border border-dark" type="text" name="first_name" id="first_name">
+                                        {%if messages%}
+                                            {%for message in messages%}
+                                                {% if 'first_name' in message.extra_tags %}
+                                                    <small style="color: red;" class="{{message.tags}}">{{message}}</small>
+                                                {% endif %}
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <div class="" style="width: 110px; height: 50px;">
+                                        <label class="me-4" for="last_name">Last name</label>
+                                    </div>
+                                    <div class="" style="height: 80px; width: 300px;">
+                                        <input class="form-control border border-dark" type="text" name="last_name" id="last_name">
+                                        {%if messages%}
+                                            {%for message in messages%}
+                                                {% if 'last_name' in message.extra_tags %}
+                                                    <small style="color: red;" class="{{message.tags}}">{{message}}</small>
+                                                {% endif %}
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <div class="" style="width: 110px; height: 50px;">
+                                        <label class="me-4" for="email">Email</label>
+                                    </div>
+                                    <div class="" style="height: 80px; width: 300px;">
+                                        <input class="form-control border border-dark" type="email" name="email" id="email">
+                                        {%if messages%}
+                                            {%for message in messages%}
+                                                {% if 'email' in message.extra_tags %}
+                                                    <small style="color: red;" class="{{message.tags}}">{{message}}</small>
+                                                {% endif %}
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <div class="" style="width: 110px; height: 50px;">
+                                        <label class="me-4" for="password">Password</label>
+                                    </div>
+                                    <div class="" style="height: 80px; width: 300px;">
+                                        <input class="form-control border border-dark" type="password" name="password" id="password">
+                                        {%if messages%}
+                                            {%for message in messages%}
+                                                {% if 'password' in message.extra_tags %}
+                                                    <small style="color: red;" class="{{message.tags}}">{{message}}</small>
+                                                {% endif %}
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <div class="" style="width: 110px; height: 50px;">
+                                        <label class="me-4" for="confirm_pw">Confirm pw</label>
+                                    </div>
+                                    <div class="" style="height: 80px; width: 300px;">
+                                        <input class="form-control border border-dark" type="password" name="confirm_pw" id="confirm_pw">
+                                        {%if messages%}
+                                            {%for message in messages%}
+                                                {% if 'confirm_pw' in message.extra_tags %}
+                                                    <small style="color: red;" class="{{message.tags}}">{{message}}</small>
+                                                {% endif %}
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <input type="submit" name="register" id="register" value="Register">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 mb-lg-0 px-10 py-lg-16 pt-md-7 px-lg-16 mb-8">
+                    <div class="border border-dark">
+                        <p class="d-flex justify-content-center align-items-center pt-4">Login</p>
+                        <form action="{% url 'jobs:process_signin' %}" method="post" id="signin_form">
+                            {% csrf_token %}
+                            <div class="row px-4">
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <div class="" style="width: 110px; height: 50px;">
+                                        <label class="me-4" for="email">Email</label>
+                                    </div>
+                                    <div class="" style="height: 80px; width: 300px;">
+                                        <input class="form-control border border-dark" type="email" name="signin_email" id="signin_email">
+                                        {%if messages%}
+                                            {%for message in messages%}
+                                                {% if 'signin_email' in message.extra_tags %}
+                                                    <small style="color: red;" class="{{message.tags}}">{{message}}</small>
+                                                {% endif %}
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <div class="" style="width: 110px; height: 50px;">
+                                        <label class="me-4" for="password">Password</label>
+                                    </div>
+                                    <div class="" style="height: 80px; width: 300px;">
+                                        <input class="form-control border border-dark" type="password" name="signin_password" id="signin_password">
+                                        {%if messages%}
+                                            {%for message in messages%}
+                                                {% if 'signin_password' in message.extra_tags %}
+                                                    <small style="color: red;" class="{{message.tags}}">{{message}}</small>
+                                                {% endif %}
+                                            {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex justify-content-center align-items-center mb-6">
+                                    <input type="submit" name="login" id="login" value="Login">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

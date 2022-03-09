@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>New Job</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Mmedara Josiah">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/8.4.6/js/utils.js"></script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'jobs/css/bootstrap/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'jobs/css/view_job.css' %}">
+        <script src="{% static 'jobs/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'jobs/js/view_job.js' %}"></script>
+    </head>
+    <body>
+        <div class="position-relative container-fluid">
+            {% if user %}
+                {% if job %}
+                    <div class="row">
+                        <div class="mb-8 py-8 pt-7 px-10">
+                            <div class="d-flex justify-content-between align-items-center pt-4 mb-6">
+                                <div class="me-4">
+                                    <h3>Hello {{user.first_name}}! These are the job details!</h3>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <a class="link-primary fw-bold me-4" style="color: blue;" href="{% url 'jobs:dashboard' %}">Dashboard</a>
+                                    <a class="link-primary fw-bold" id="logout" style="color: blue;" href="{% url 'jobs:logout' %}" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                                    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Logout</h5>
+                                                    <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to logout?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" id="no" data-dismiss="modal">No</button>
+                                                    <a class="btn btn-danger" href="#" id="yes">Yes</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="fw-bold">{{job.title}}</p>
+                            <div class="border border-dark py-8 px-10 mb-6">
+                                <p>{{job.description}}</p>
+                                <p>Location: {{job.location}}</p>
+                                <p>Posted by: {{job.created_by.first_name}} {{job.created_by.last_name}}</p>
+                                <p>Posted on: {{job.created_at}}</p>
+                                <p>Categories: {{job.category}}</p>
+                            </div>
+                            {% if job.added_by != user %}
+                                <a class="link-primary fw-bold" style="color: blue;" href="{% url 'jobs:add_user_job' id=job.id %}">Add to my jobs</a>
+                            {% else %}
+                                <a style="color: blue;" href="{% url 'jobs:giveup_the_job' id=job.id %}" class="give_up link-primary fw-bold">Give up</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </body>
+</html>

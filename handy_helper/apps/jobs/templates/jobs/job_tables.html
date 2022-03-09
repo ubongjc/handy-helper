@@ -1,0 +1,84 @@
+{% load static %}
+<script src="{% static 'jobs/js/job_tables.js' %}"></script>
+<div class="row mb-8">
+    {% if everyone_jobs %}
+        <p>Everyone's jobs:</p>
+        {% if everyone_jobs|length > 0 %}
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th scope="col">Job</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in everyone_jobs %}
+                        <tr>
+                            <td>{{job.title}}</td>
+                            <td>{{job.location}}</td>
+                            <td>
+                                <a style="color: blue;" href="{% url 'jobs:view_job' id=job.id %}">View</a> &nbsp;|&nbsp;
+                                {% if job.created_by == user %}
+                                    <a style="color: blue;" href="#" data-toggle="modal" data-target="#removeModal{{job.id}}" class="remove">Remove</a> &nbsp;|&nbsp;
+                                    <div class="modal removeModal" id="removeModal{{job.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{job.id}}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel{{job.id}}">Remove Job</h5>
+                                                    <button type="button" class="remove_close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to remove the {{job.title}} job?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary remove_no" data-dismiss="modal">No</button>
+                                                    <a class="btn btn-danger remove_yes" href="#" data-id="{{job.id}}" >Yes</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a style="color: blue;" href="{% url 'jobs:edit_job' id=job.id %}">Edit</a> &nbsp;|&nbsp;
+                                {% endif %}
+                                <a style="color: blue;" class="add" href="#" id="add" data-job="{{job.id}}">Add</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% else %}
+        <p>There are no jobs right now</p>
+    {% endif %}
+</div>
+<div class="row mb-8">
+    {% if user_jobs %}
+        <p>{{user.first_name}}'s jobs:</p>
+        {% if user_jobs|length > 0 %}
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th scope="col">Job</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in user_jobs %}
+                        <tr>
+                            <td>{{job.title}}</td>
+                            <td>
+                                <a style="color: blue;" href="{% url 'jobs:view_job' id=job.id %}">View</a> &nbsp;|&nbsp;
+                                <a style="color: blue;" href="#" class="done" id="done" data-job="{{job.id}}">Done</a> &nbsp;|&nbsp;
+                                <a style="color: blue;" href="#" class="give_up" data-job="{{job.id}}">Give up</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% else %}
+        <p>{{user.first_name}} has no jobs right now</p>
+    {% endif %}
+</div>
